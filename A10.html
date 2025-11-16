@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>A10 Cookie Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f5f5f5;
+    }
+    #cookieDisplay {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 20px;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="cookieDisplay">Loading cookie...</div>
+
+  <script>
+    // Set cookie
+    function setCookie(name, value, days) {
+      const d = new Date();
+      d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+      let expires = "expires=" + d.toUTCString();
+      document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+    }
+
+    // Get cookie
+    function getCookie(name) {
+      let cname = name + "=";
+      let decodedCookie = decodeURIComponent(document.cookie);
+      let ca = decodedCookie.split(';');
+      for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(cname) == 0) {
+          return c.substring(cname.length, c.length);
+        }
+      }
+      return "";
+    }
+
+    // Run on page load
+    window.onload = function() {
+      let current = getCookie("A10Cookie");
+
+      // If no cookie exists, ask for it (pop-up required by rubric)
+      if (current === "") {
+        let userInput = prompt("Enter a value to store in your cookie:");
+        if (userInput !== null && userInput !== "") {
+          setCookie("A10Cookie", userInput, 7);
+          current = userInput;
+        }
+      }
+
+      // Display cookie on page automatically (no text box)
+      document.getElementById("cookieDisplay").innerHTML =
+        "Cookie value: <strong>" + (current || "No cookie set") + "</strong>";
+    };
+  </script>
+
+  <footer>
+    © 2025 Ambrose Mcahee, November 18
+  </footer>
+
+</body>
+</html>
